@@ -1,0 +1,26 @@
+/* 
+    Created on : 14-Mar-2016, 00:06:07
+    Author     : Mikhail Dumchev
+*/
+.error-message {
+    position: absolute;
+    padding-left: 30px;
+    color: rgb(255, 69, 0);
+    font-size: 14px;
+    white-space: nowrap;
+    background-image: url("../images/icons/exclamation-note.png");
+    background-repeat: no-repeat;
+    background-position: 0% 50%;
+}
+.error-message:hover {
+    cursor: text;
+}
+input[type=text].error,
+input[type=email].error,
+textarea.error {
+    box-shadow: inset 0px 0px 0px 1px rgb(255, 69, 0) !important;
+    color: rgb(255, 69, 0);
+}
+.checkbox.error {
+    border: 1px solid rgb(255, 69, 0) !important;
+}

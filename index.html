@@ -6,23 +6,30 @@
     </head>
     <body>
         <div class="frame">
-            <form method=post action="" id=ajaxform>
-                <input type=text name=name placeholder="Введите имя*" value="">
-                <input type=email name=email placeholder="Введите E-mail*" value="">
-                <input type=tel id=phone name=phone placeholder="Введите телефон*" value="sss">
-                <input type=hidden name=id value=489>
-                <input type=hidden name=geo id=geo value=NULL>
-                <input type=hidden name=city id=city value=NULL>
-                <input type=submit value="Записаться"/>
+            <form method="POST" id="ajaxform" onsubmit="return false;">
+                <input type="text" name="name" placeholder="Введите имя*" value="" data-required="true" data-type="1">
+                <input type="email" name="email" placeholder="Введите E-mail*" value="" data-required="true" data-type="3">
+                <input type="tel" id="phone" name="phone" placeholder="Введите телефон*" value="" data-required="true" data-type="2">
+                <input type="hidden" name="id" value="489">
+                <input type="hidden" name="geo" id="geo" value="NULL">
+                <input type="hidden" name="city" id="city" value="NULL">
+                <input type="submit" value="Записаться" class="request-caller">
             </form>
         </div>
+        <script src="js/basic-functions.js"></script>
+        <script src="js/validation.js"></script>
+        <script src="js/request.js"></script>
         <script src="js/auto-complementer.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <link property="stylesheet" rel="stylesheet" href="css/validation.css">
         <script type="text/javascript">
             window.onload = function() {
                 "use strict";
                 var autoComplementer = new AutoComplementer();
                 autoComplementer.create(document.forms[0].phone);
+                var requestObject = new Request();
+                requestObject.appendHandler(document.getElementsByClassName("request-caller")[0]);
+                requestObject.clearTextFields();
             };
         </script>
     </body>
