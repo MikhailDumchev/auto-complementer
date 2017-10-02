@@ -16,17 +16,23 @@
                 <input type="submit" value="Записаться" class="request-caller">
             </form>
         </div>
+        <script src="js/detector.js"></script>
+        <script src="js/setter.js"></script>
         <script src="js/basic-functions.js"></script>
         <script src="js/validation.js"></script>
         <script src="js/request.js"></script>
         <script src="js/auto-complementer.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <link property="stylesheet" rel="stylesheet" href="css/validation.css">
         <script type="text/javascript">
             window.onload = function() {
                 "use strict";
+                //Определение гео-данных и установка значений для гео-полей;
+                var detector = new Detector();
+                detector.detect(document.forms[0]);
+                //Инициализация авто-дополнителя телефонных номеров;
                 var autoComplementer = new AutoComplementer();
-                autoComplementer.create(document.forms[0].phone);
+                autoComplementer.create(document.forms[0].phone, detector.getGeoData());
+                //Подключение обработчика для AJAX-отправки;
                 var requestObject = new Request();
                 requestObject.appendHandler(document.getElementsByClassName("request-caller")[0]);
                 requestObject.clearTextFields();

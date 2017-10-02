@@ -1,12 +1,8 @@
 function AutoComplementer() {
+    //Текущая страна пользователя;
+    var currentCountry = "";
     //Текстовое поле, к которому добавляется обработчик;
     var element = new Object();
-    //Ссылка на текстовое поле с информацией о стране;
-    var geoField = new Object();
-    //Ссылка на текстовое поле с информацией о городе;
-    var cityField = new Object();
-    var geoFieldTitle = "geo";
-    var cityFieldTitle = "city";
     var reloadIndictor = true;
     //Метод отвечает за проверку текстового поля на заполение;
     var checkForEmpty = function () {
@@ -17,10 +13,10 @@ function AutoComplementer() {
         return indicator;
     };
     //Метод отвечает за добавление кода оператора в текстовое поле;
-    var addPhoneNumber = function(country) {
+    var addPhoneNumber = function() {
         "use strict";
         if (checkForEmpty()) {
-            getOperatorCode(country);
+            getOperatorCode();
         }
     };
     //Метод отвечает за начальную очистку текстового поля;
@@ -41,7 +37,7 @@ function AutoComplementer() {
     };
     //Метод отвечает за определение кода мобильного оператора (в зависимости от
     //страны пользователя);
-    var getOperatorCode = function (country) {
+    var getOperatorCode = function () {
         "use strict";
         var url = "operator-code.json";
         var XHR = new XMLHttpRequest();
@@ -53,7 +49,7 @@ function AutoComplementer() {
                 } else {
                     response = JSON.parse(XHR.responseText);
                     for (var key in response) {
-                        if (country === key) {
+                        if (currentCountry === key) {
                             element.value = response[key];
                             return true;
                         }
@@ -67,19 +63,11 @@ function AutoComplementer() {
         XHR.send();
     };
     //Инициализирующий метод;
-    this.create = function (value) {
+    this.create = function (value, geoData) {
         "use strict";
-        var form = new Object();
-        var result = new Object();
         if (value && value.nodeName === "INPUT") {
             element = value;
-            //Инициализация скрытых текстовых полей;
-            result = searchForm(element);
-            if (result.status) {
-                form = result.element;
-                geoField = form[geoFieldTitle];
-                cityField = form[cityFieldTitle];
-            }
+            currentCountry = geoData.countryEn;
             //Очистка поля "Номер телефона" перед началом работы скрипта;
             if (reloadIndictor) reloadPhoneField();
             element.addEventListener("click", this, false);
@@ -90,14 +78,12 @@ function AutoComplementer() {
         "use strict";
         event = event || window.event;
         if (event.type === "click") {
-            $.get("http://api.2ip.ua/geo.json?key=142dafee11e31629", function (response) {
-                var country = response.country_code;
-                var city_rus = response.city_rus;
-                var country_rus = response.country_rus;
-                geoField.value = country_rus;
-                cityField.value = city_rus;
-                addPhoneNumber(country);
-            }, "json");
+//            var country = response.country_code;
+//            var city_rus = response.city_rus;
+//            var country_rus = response.country_rus;
+//            geoField.value = country_rus;
+//            cityField.value = city_rus;
+            addPhoneNumber();
         }
     };
 }
