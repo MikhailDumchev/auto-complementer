@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <title>GEO-SCRIPT</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div class="frame">
+            <form method=post action="" id=ajaxform>
+                <input type=text name=name placeholder="Введите имя*" value="">
+                <input type=email name=email placeholder="Введите E-mail*" value="">
+                <input type=tel id=phone name=phone placeholder="Введите телефон*" value="sss">
+                <input type=hidden name=id value=489>
+                <input type=hidden name=geo id=geo value=NULL>
+                <input type=hidden name=city id=city value=NULL>
+                <input type=submit value="Записаться"/>
+            </form>
+        </div>
+        <script src="js/auto-complementer.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script type="text/javascript">
+            window.onload = function() {
+                "use strict";
+                var autoComplementer = new AutoComplementer();
+                autoComplementer.create(document.forms[0].phone);
+            };
+        </script>
+    </body>
+</html>
