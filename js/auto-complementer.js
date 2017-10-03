@@ -70,19 +70,14 @@ function AutoComplementer() {
             currentCountry = geoData.countryEn;
             //Очистка поля "Номер телефона" перед началом работы скрипта;
             if (reloadIndictor) reloadPhoneField();
-            element.addEventListener("click", this, false);
+            element.addEventListener("focus", this, false);
         }
     };
     //Обработчик;
     this.handleEvent = function (event) {
         "use strict";
         event = event || window.event;
-        if (event.type === "click") {
-//            var country = response.country_code;
-//            var city_rus = response.city_rus;
-//            var country_rus = response.country_rus;
-//            geoField.value = country_rus;
-//            cityField.value = city_rus;
+        if (event.type === "focus") {
             addPhoneNumber();
         }
     };
