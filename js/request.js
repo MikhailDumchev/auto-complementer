@@ -60,12 +60,37 @@ function Request() {
         event = event || window.event;
         var XHR = new XMLHttpRequest();
         var additoryObject = new Object();
+        var localStorageObject = new Object();
         var data = new Object();
         var requestBody = "";
         var counter = 0;
         XHR.onreadystatechange = function() {
             if (XHR.readyState === 4) {
-                console.log(JSON.parse(XHR.responseText));
+                //Заполнение localStorage на основании имён и значений текстовых полей;
+                for (counter = 0; counter < this.container.elements.length; counter++) {
+                    additoryObject = this.container.elements[counter];
+                    if (additoryObject.type !== "submit") {
+                        switch (additoryObject.type) {
+                            case "text":
+                            case "email":
+                            case "tel":
+                                localStorageObject[additoryObject.name] = additoryObject.value;
+                                break;
+                            case "radio":
+                                if (additoryObject.checked) {
+                                    localStorageObject[additoryObject.name] = additoryObject.value;
+                                }
+                                break;
+                            default: break;
+                        }
+                        if (additoryObject.nodeName === "TEXTAREA") {
+                            localStorageObject[additoryObject.name] = additoryObject.value;
+                        }
+                    }
+                }
+                localStorage.setItem("fr-user", JSON.stringify(
+                    localStorageObject
+                ));
             }
         }.bind(this);
         if (event.type === "click") {
@@ -84,6 +109,8 @@ function Request() {
                         if (additoryObject.type !== "submit") {
                             switch (additoryObject.type) {
                                 case "text":
+                                case "email":
+                                case "tel":
                                 case "hidden":
                                     requestBody = requestBody + additoryObject.name + "=" + additoryObject.value;
                                     if (counter < this.container.elements.length - 2) requestBody = requestBody + "&";
