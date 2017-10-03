@@ -1,4 +1,5 @@
 function Validation() {
+    var additoryVariable = "";
     var errorClassName = "error";
     var requireAttributeTitle = "data-required";
     var validationTypeAttributeTitle = "data-type";
@@ -6,6 +7,32 @@ function Validation() {
     var wrongDataMessage = "Неправильно.";
     var additoryContainerClassName = "additory-container";
     var form = new Object();
+    var getOperatorCode = function() {
+        "use strict";
+        var url = "operator-code.json";
+        var XHR = new XMLHttpRequest();
+        XHR.onreadystatechange = function() {
+            var response = new Array();
+            var counter = 0;
+            if (XHR.readyState === 4) {
+                if (XHR.status !== 200) {
+                    console.error(XHR.status + ": " + XHR.statusText);
+                } else {
+                    response = JSON.parse(XHR.responseText);
+                    additoryVariable = "(";
+                    for (var key in response) {
+                        additoryVariable = additoryVariable + "(\\" + response[key] + ")";
+                        if (counter < Object.keys(response).length - 1) additoryVariable = additoryVariable + "|";
+                        counter++;
+                    }
+                    additoryVariable = additoryVariable + ")\\s{0,1}\\({0,1}[0-9]{3}\\){0,1}\\s{0,1}[0-9]{1,3}(\\-|\\s){0,1}[0-9]{2}(\\-|\\s){0,1}[0-9]{2}$";
+                }
+                return false;
+            }
+        };
+        XHR.open("GET", url);
+        XHR.send();
+    };
     this.setForm = function(value) {
         "use strict";
         var counter = 0;
@@ -18,8 +45,9 @@ function Validation() {
             for (counter = 0; counter < form.elements.length; counter++)
                 if (form.elements[counter].type !== "submit" && form.elements[counter].type !== "button" && form.elements[counter].type !== "hidden")
                     form.elements[counter].addEventListener("focus", this, false);
-        }
-        else console.error("Вы указали некорректный DOM-элемент;");
+            //Получение списка всех мобильных операторов;
+            getOperatorCode();
+        } else console.error("Вы указали некорректный DOM-элемент;");
     };
     this.getForm = function() {
         "use strict";
@@ -80,6 +108,10 @@ function Validation() {
             case "3":
                 //Ввод email-адреса;
                 pattern = /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/ig;
+                break;
+                //Валидация номеров телефонов на основании данных из JSON-файла;
+            case "4":
+                pattern = new RegExp(additoryVariable, "ig");
                 break;
             default: break;
         }
