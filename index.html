@@ -6,7 +6,7 @@
     </head>
     <body>
         <div class="frame">
-            <form method="POST" id="ajaxform" onsubmit="return false;">
+            <form method="POST" id="ajaxform" onsubmit="return false;" action="http://air2.yaroslav-samoylov.com/lead/add/">
                 <input type="text" name="name" placeholder="Введите имя*" value="" data-required="true" data-type="1">
                 <input type="email" name="email" placeholder="Введите E-mail*" value="" data-required="true" data-type="3">
                 <input type="tel" id="phone" name="phone" placeholder="Введите телефон*" value="" data-required="true" data-type="4">
@@ -22,6 +22,7 @@
         <script src="js/validation.js"></script>
         <script src="js/request.js"></script>
         <script src="js/auto-complementer.js"></script>
+        <script src="js/restorer.js"></script>
         <link property="stylesheet" rel="stylesheet" href="css/validation.css">
         <script type="text/javascript">
             window.onload = function() {
@@ -36,6 +37,10 @@
                 var requestObject = new Request();
                 requestObject.appendHandler(document.getElementsByClassName("request-caller")[0]);
                 requestObject.clearTextFields();
+                //Восстановление введённых пользователем данных;
+                var restorer = new Restorer();
+                restorer.setForm(document.forms[0]);
+                restorer.execute();
             };
         </script>
     </body>
