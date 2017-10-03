@@ -1,4 +1,5 @@
 function Request() {
+    var spinnerObject = new Object();
     var requestCallerClassName = "request-caller";
     var handlerAddress = "http://air2.yaroslav-samoylov.com/lead/add/";
     var validationObject = new Object();
@@ -60,6 +61,7 @@ function Request() {
         event = event || window.event;
         var XHR = new XMLHttpRequest();
         var additoryObject = new Object();
+        //Объект, который используется для сохранения в localStorage введённых пользователем данных;
         var localStorageObject = new Object();
         var data = new Object();
         var requestBody = "";
@@ -91,10 +93,21 @@ function Request() {
                 localStorage.setItem("fr-user", JSON.stringify(
                     localStorageObject
                 ));
+                //Удаление индикатора-заглушки;
+                document.body.removeAttribute(indicator);
+                //Удаление индикатора отправки;
+                spinnerObject.removeSpinner();
+                //TODO: Найти и обработать ошибку, которая возникает при перегрузке сервера (код ошибки);
             }
         }.bind(this);
         if (event.type === "click") {
             if (!document.body.hasAttribute(indicator) && validationObject.validateForm()) {
+                //Установка индикатора-заглушки;
+                document.body.setAttribute(indicator, true);
+                //Добавление индикатора отправки;
+                spinnerObject = new Spinner();
+                spinnerObject.setContainer(document.body);
+                spinnerObject.appendSpinner();
                 //Если используется POST-запросы (или на обработчик необходимо отправлять файлы); 
                 if (this.container.getAttribute("method") === "POST") {
                     data = new FormData(this.container);

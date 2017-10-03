@@ -11,8 +11,8 @@
                 <input type="email" name="email" placeholder="Введите E-mail*" value="" data-required="true" data-type="3">
                 <input type="tel" id="phone" name="phone" placeholder="Введите телефон*" value="" data-required="true" data-type="4">
                 <input type="hidden" name="id" value="489">
-                <input type="hidden" name="geo" id="geo" value="NULL">
-                <input type="hidden" name="city" id="city" value="NULL">
+                <input type="hidden" name="country_rus" id="geo" value="NULL" data-geo="true">
+                <input type="hidden" name="city_rus" id="city" value="NULL" data-geo="true">
                 <input type="submit" value="Записаться" class="request-caller">
             </form>
         </div>
@@ -23,6 +23,8 @@
         <script src="js/request.js"></script>
         <script src="js/auto-complementer.js"></script>
         <script src="js/restorer.js"></script>
+        <script src="js/spinner.js"></script>
+        <link property="stylesheet" rel="stylesheet" href="css/spinner.css">
         <link property="stylesheet" rel="stylesheet" href="css/validation.css">
         <script type="text/javascript">
             window.onload = function() {
