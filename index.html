@@ -9,10 +9,11 @@
             <form method="POST" id="ajaxform" onsubmit="return false;" action="http://air2.yaroslav-samoylov.com/lead/add/">
                 <input type="text" name="name" placeholder="Введите имя*" value="" data-required="true" data-type="1">
                 <input type="email" name="email" placeholder="Введите E-mail*" value="" data-required="true" data-type="3">
-                <input type="tel" id="phone" name="phone" placeholder="Введите телефон*" value="" data-required="true" data-type="4">
+                <input type="tel" name="phone" placeholder="Введите телефон*" value="" data-required="true" data-type="4">
                 <input type="hidden" name="id" value="489">
-                <input type="hidden" name="country_rus" id="geo" value="NULL" data-geo="true">
-                <input type="hidden" name="city_rus" id="city" value="NULL" data-geo="true">
+                <input type="hidden" name="country_rus" value="NULL" data-geo="true">
+                <input type="hidden" name="city_rus" value="NULL" data-geo="true">
+                <input type="hidden" name="country" value="NULL" data-geo="true">
                 <input type="submit" value="Записаться" class="request-caller">
             </form>
         </div>
@@ -24,17 +25,28 @@
         <script src="js/auto-complementer.js"></script>
         <script src="js/restorer.js"></script>
         <script src="js/spinner.js"></script>
+        <script src="js/listener.js"></script>
+        <script src="js/cross-domain-storage.js"></script>
         <link property="stylesheet" rel="stylesheet" href="css/spinner.css">
         <link property="stylesheet" rel="stylesheet" href="css/validation.css">
+        <link property="stylesheet" rel="stylesheet" href="css/listener.css">
         <script type="text/javascript">
             window.onload = function() {
                 "use strict";
+                localStorage.clear();
                 //Определение гео-данных и установка значений для гео-полей;
-                var detector = new Detector();
-                detector.detect(document.forms[0]);
+//                var detector = new Detector();
+//                detector.detect(document.forms[0]);
+                //Подключение слушателя сообщений;
+                var listenerObject = new Listener();
+                listenerObject.startListening();
+                listenerObject.setForm(document.forms[0]);
+                //Получение localStorage из другого домена;
+                var crossDomainStorage = new CrossDomainStorage();
+                crossDomainStorage.execute();
                 //Инициализация авто-дополнителя телефонных номеров;
                 var autoComplementer = new AutoComplementer();
-                autoComplementer.create(document.forms[0].phone, detector.getGeoData());
+                autoComplementer.create(document.forms[0].phone);
                 //Подключение обработчика для AJAX-отправки;
                 var requestObject = new Request();
                 requestObject.appendHandler(document.getElementsByClassName("request-caller")[0]);

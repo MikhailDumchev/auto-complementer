@@ -1,0 +1,12 @@
+/* 
+    Created on : 04.10.2017, 16:28:32
+    Author     : Mikhail Dumchev
+*/
+.cross-domain-iframe {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 0px;
+    height: 0px;
+    border: none;
+}
