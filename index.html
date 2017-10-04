@@ -26,7 +26,6 @@
         <script src="js/restorer.js"></script>
         <script src="js/spinner.js"></script>
         <script src="js/listener.js"></script>
-        <script src="js/cross-domain-storage.js"></script>
         <link property="stylesheet" rel="stylesheet" href="css/spinner.css">
         <link property="stylesheet" rel="stylesheet" href="css/validation.css">
         <link property="stylesheet" rel="stylesheet" href="css/listener.css">
@@ -34,16 +33,11 @@
             window.onload = function() {
                 "use strict";
                 localStorage.clear();
-                //Определение гео-данных и установка значений для гео-полей;
-//                var detector = new Detector();
-//                detector.detect(document.forms[0]);
-                //Подключение слушателя сообщений;
+                //Подключение слушателя и отправителя сообщений;
                 var listenerObject = new Listener();
                 listenerObject.startListening();
                 listenerObject.setForm(document.forms[0]);
-                //Получение localStorage из другого домена;
-                var crossDomainStorage = new CrossDomainStorage();
-                crossDomainStorage.execute();
+                listenerObject.execute();
                 //Инициализация авто-дополнителя телефонных номеров;
                 var autoComplementer = new AutoComplementer();
                 autoComplementer.create(document.forms[0].phone);

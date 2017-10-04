@@ -1,3 +1,6 @@
+/**
+ * Класс отвечает за AJAX-отправку сообщений на сервер
+ */
 function Request() {
     var spinnerObject = new Object();
     var requestCallerClassName = "request-caller";
