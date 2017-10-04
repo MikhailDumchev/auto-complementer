@@ -4,7 +4,7 @@
 function Request() {
     var spinnerObject = new Object();
     var requestCallerClassName = "request-caller";
-    var handlerAddress = "http://air2.yaroslav-samoylov.com/lead/add/";
+    var handlerAddress = "http://fazarosta.com/add/";
     var validationObject = new Object();
     this.button = new Object();
     //Название индикатора-заглушки, который препятствует отправке формы;
