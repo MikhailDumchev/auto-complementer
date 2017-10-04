@@ -2,6 +2,8 @@
  * Класс отвечает за авто-дополнение телефонного номера кодом страны;
  */
 function AutoComplementer() {
+    //Коды стран;
+    var countryCodes = new Array();
     //Название текстового поля, в котором сохраняется аббревиатура текущей страны;
     var coutryFieldTitle = "country";
     //Ссылка на форму, которой принадлежит текущее текстовое поле;
@@ -20,10 +22,11 @@ function AutoComplementer() {
         return indicator;
     };
     //Метод отвечает за добавление кода оператора в текстовое поле;
-    var addPhoneNumber = function() {
+    var addCountryCode = function() {
         "use strict";
         if (checkForEmpty()) {
-            getOperatorCode();
+            if (countryCodes[currentCountry]) element.value = countryCodes[currentCountry];
+            else element.value = "+";
         }
     };
     //Метод отвечает за начальную очистку текстового поля;
@@ -43,28 +46,17 @@ function AutoComplementer() {
         }
         return {"status": indicator, "element": additoryVariable};
     };
-    //Метод отвечает за определение кода мобильного оператора (в зависимости от
-    //страны пользователя);
-    var getOperatorCode = function () {
+    //Метод отвечает за определение кода страны (в зависимости от
+    //гео-локации пользователя);
+    var getСountryCodes = function () {
         "use strict";
         var url = "operator-code.json";
         var XHR = new XMLHttpRequest();
         XHR.onreadystatechange = function() {
-            var response = new Array();
             if (XHR.readyState === 4) {
-                if (XHR.status !== 200) {
+                if (XHR.status !== 200)
                     console.error(XHR.status + ": " + XHR.statusText);
-                } else {
-                    response = JSON.parse(XHR.responseText);
-                    for (var key in response) {
-                        if (currentCountry === key) {
-                            element.value = response[key];
-                            return true;
-                        }
-                    }
-                    element.value = "+";
-                }
-                return false;
+                else countryCodes = JSON.parse(XHR.responseText);
             }
         };
         XHR.open("GET", url);
@@ -78,14 +70,18 @@ function AutoComplementer() {
             element = value;
             //Очистка поля "Номер телефона" перед началом работы скрипта;
             if (reloadIndictor) reloadPhoneField();
-            element.addEventListener("focus", this, false);
+            element.addEventListener("focus", this, true);
+            //Получение всех доступных кодов стран;
+            getСountryCodes();
             //Поиск формы, которой принадлежит данное текстовое поле;
             additoryVariable = searchForm();
             //Если форма найдена
             if (additoryVariable.status) {
                 form = additoryVariable.element;
-                if (form.elements[coutryFieldTitle]) currentCountry = form.elements[coutryFieldTitle].value;
-            } else console.error("Форма не найдена;");
+            } else {
+                element.removeEventListener("focus", this, false);
+                console.error("Форма не найдена;");
+            }
         }
     };
     //Обработчик;
@@ -93,7 +89,11 @@ function AutoComplementer() {
         "use strict";
         event = event || window.event;
         if (event.type === "focus") {
-            addPhoneNumber();
+            //Отложеное выполнение обработки события (гарантированная асинхронность);
+            setTimeout(function() { 
+                if (form.elements[coutryFieldTitle]) currentCountry = form.elements[coutryFieldTitle].value;
+                addCountryCode();
+            }.bind(this), 0);
         }
     };
 }
