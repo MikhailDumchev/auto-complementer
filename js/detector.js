@@ -30,10 +30,6 @@ function Detector() {
                         console.error("Не подключен скрипт 'setter.js';");
                     }
                 }
-                //Сохранение полученных гео-данных в localStorage;
-                localStorage.setItem("fr-user-geo", JSON.stringify(
-                    this.getGeoData()
-                ));
             }
         }.bind(this);
         //Формирование запроса на сервер, если гео-данные ещё не получены;
